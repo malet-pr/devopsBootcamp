@@ -58,13 +58,13 @@ else
 fi
 
 echo -e "\n================ AJUSTAR CONFIGURACIÓN DE PHP ====================="
-php_ini_path="/etc/php/7.2/apache2/php.ini"  # Adjust the path based on your PHP version and installation
+php_ini_path="/etc/php/7.2/apache2/php.ini" 
 # Agregar index.php a la lista de archivos y reiniciar
 sed -i '/^index/s/\(.*\)/\1 index.php/' $php_ini_path
 systemctl restart apache2
 
 echo -e "\n================ PROBAR COMPATIBILIDAD DE PHP ====================="
-php_test_file="/var/www/html/info.php"  # Adjust the path based on your web server configuration
+php_test_file="/var/www/html/info.php" 
 # Crear un archivo php y probarlo
 echo "<?php phpinfo(); ?>" > $php_test_file
 php_result=$(curl -s http://localhost/info.php)
@@ -135,9 +135,8 @@ WEB_URL="localhost"
 # Realiza una solicitud HTTP GET a la URL
 HTTP_STATUS=$(curl -Is "$WEB_URL" | head -n 1)
 
-# Verifica si la respuesta es 200 OK (puedes ajustar esto según tus necesidades)
+# Verifica si la respuesta es 200 OK 
 if [[ "$HTTP_STATUS" == *"200 OK"* ]]; then
-  # Obtén información del repositorio
     DEPLOYMENT_INFO2="Despliegue del repositorio $REPO_NAME - Nuria Malet Quintar:"
     DEPLOYMENT_INFO="La página web $WEB_URL está en línea."
     COMMIT="Commit: $(git rev-parse --short HEAD)"
@@ -147,7 +146,6 @@ else
   DEPLOYMENT_INFO="La página web $WEB_URL no está en línea."
 fi
 
-# Construye el mensaje
 MESSAGE="$DEPLOYMENT_INFO2\n$DEPLOYMENT_INFO\n$COMMIT\n$AUTHOR\n$REPO_URL\n$DESCRIPTION"
 
 # Envía el mensaje a Discord utilizando la API de Discord
