@@ -4,7 +4,6 @@ echo "\n==================== INICIO DESPLIEGUE 295WORDS ========================
 
 # Para obtener una forma rápida de volver al directorio del script
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
-cd "$SCRIPT_DIR"
 
 # Lee archivo con variables de entorno, usuarios y claves
 if [ -f .env ]; then
@@ -19,8 +18,7 @@ fi
 
 echo "\n======================== LOGIN EN DOCKER HUB ============================="
 REGISTRY_URL="https://index.docker.io/v1/"
-echo "$DOCKER_PASSWORD" | docker login $REGISTRY_URL -u $DOCKER_USERNAME --password-stdin 2>/dev/null
-# unset PASSWORD
+docker login $REGISTRY_URL -u $DOCKER_USERNAME -p $DOCKER_PASSWORD 2>/dev/null
 
 echo "\n======================== IMAGEN DE POSTGRESQL ============================"
 cd db
