@@ -3,8 +3,6 @@ services:
   db:
     restart: always
     image: "${DOCKER_USERNAME}/bootcamp-postgres:${TAG}"
-    env_file:
-      - ./.env
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_USER=${POSTGRES_USER}
@@ -18,8 +16,6 @@ services:
   api:
     restart: always
     image: "${DOCKER_USERNAME}/bootcamp-words:${TAG}"
-    env_file:
-      - ./.env
     depends_on:
       - db
     networks:
@@ -30,8 +26,6 @@ services:
   web:
     restart: always
     image: "${DOCKER_USERNAME}/bootcamp-go:${TAG}"
-    env_file:
-      - ./.env
     environment:
       - API_URI=http://api:8080/
     ports:
