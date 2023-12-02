@@ -1,0 +1,39 @@
+version: '3'
+services:
+  db:
+    restart: always
+    image: maletq/bootcamp-postgres
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+    ports:
+      - 5432:5432
+    networks:
+      - back
+      - front
+    expose:
+      - 5432
+  api:
+    restart: always
+    image: maletq/bootcamp-words
+    depends_on:
+      - db
+    networks:
+      - back
+      - front
+    expose: 
+      - 8080
+  web:
+    restart: always
+    image: maletq/bootcamp-go
+    environment:
+      - API_URI=http://api:8080/
+    ports:
+      - 8084:80
+    networks:
+      - front
+    depends_on:
+      - api
+networks:
+  back:
+  front:
