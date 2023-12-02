@@ -31,7 +31,7 @@ docker build -t $DOCKER_USERNAME/bootcamp-postgres \
   --build-arg POSTGRES_DB=$POSTGRES_DB  \
   --build-arg PORT=5432 .
 # Subida a Docker Hub
-docker push $DOCKER_USERNAME/bootcamp-postgres:latest
+docker push $DOCKER_USERNAME/bootcamp-postgres:$TAG
 cd "$SCRIPT_DIR"
 
 echo "\n========================= IMAGEN DE JAVA ================================="
@@ -46,7 +46,7 @@ fi
 # Construcción de la imagen
 docker build -t $DOCKER_USERNAME/bootcamp-words .
 # Subida a Docker Hub
-docker push $DOCKER_USERNAME/bootcamp-words:latest
+docker push $DOCKER_USERNAME/bootcamp-words:$TAG
 cd "$SCRIPT_DIR"
 
 echo "\n========================== IMAGEN DE GO =================================="
@@ -54,7 +54,7 @@ cd web
 # Construcción de la imagen
 docker build -t $DOCKER_USERNAME/bootcamp-go .
 # Subida a Docker Hub
-docker push $DOCKER_USERNAME/bootcamp-go:latest
+docker push $DOCKER_USERNAME/bootcamp-go:$TAG
 cd "$SCRIPT_DIR"
 
 echo "\n====================== CORRER DOCKER-COMPOSE ============================="
