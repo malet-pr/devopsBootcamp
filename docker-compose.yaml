@@ -2,10 +2,12 @@ version: '3'
 services:
   db:
     restart: always
-    image: maletq/bootcamp-postgres
+    image: "${DOCKER_USERNAME}/bootcamp-postgres:${TAG}"
+    env_file:
+      - ./.env
     environment:
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_USER=${POSTGRES_USER}
     ports:
       - 5432:5432
     networks:
@@ -15,7 +17,9 @@ services:
       - 5432
   api:
     restart: always
-    image: maletq/bootcamp-words
+    image: "${DOCKER_USERNAME}/bootcamp-words:${TAG}"
+    env_file:
+      - ./.env
     depends_on:
       - db
     networks:
@@ -25,7 +29,9 @@ services:
       - 8080
   web:
     restart: always
-    image: maletq/bootcamp-go
+    image: "${DOCKER_USERNAME}/bootcamp-go:${TAG}"
+    env_file:
+      - ./.env
     environment:
       - API_URI=http://api:8080/
     ports:

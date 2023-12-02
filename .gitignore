@@ -1,3 +1,4 @@
 .vscode
 .git
-
+api/maven_build.log
+api/target/
