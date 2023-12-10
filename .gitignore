@@ -4,4 +4,8 @@ Dockerfile
 .vscode
 assets/
 docs/
+frontend/node_modules
+merchandise/node_modules
+products/node_modules
+shopping-cart/node_modules
 instrucciones.md
