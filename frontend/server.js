@@ -3,9 +3,9 @@ let path = require('path');
 let app = express();
 
 // with docker-compose: container-name, with K8s: service-name 
-let productsEndpoint = process.env.PRODUCTS_SERVICE || 'localhost'
-let shoppingCartEndpoint = process.env.SHOPPING_CART_SERVICE || 'localhost'
-let merchandiseEndpoint = process.env.MERCHANDISE_SERVICE || 'localhost'
+let productsEndpoint = process.env.PRODUCTS_SERVICE 
+let shoppingCartEndpoint = process.env.SHOPPING_CART_SERVICE 
+let merchandiseEndpoint = process.env.MERCHANDISE_SERVICE 
 
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, "index.html"));

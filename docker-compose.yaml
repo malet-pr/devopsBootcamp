@@ -1,0 +1,42 @@
+version: '3'
+services:
+  front:
+    restart: always
+    image: "${DOCKER_USERNAME}/ms-frontend:${TAG}"
+    environment:
+      - PRODUCTS_SERVICE=${PRODUCTS_SERVICE}
+      - SHOPPING_CART_SERVICE=${SHOPPING_CART_SERVICE}
+      - MERCHANDISE_SERVICE=${MERCHANDISE_SERVICE}
+    ports:
+      - 3000:3000
+    networks:
+      - challenge
+  products:
+    restart: always
+    image: "${DOCKER_USERNAME}/ms-products:${TAG}"
+    expose: 
+      - 3001
+    ports:
+      - 3001:3001
+    networks:
+      - challenge      
+  cart:
+    restart: always
+    image: "${DOCKER_USERNAME}/ms-cart:${TAG}"
+    expose:
+      - 3002
+    ports:
+      - 3002:3002
+    networks:
+      - challenge
+  merchandise:
+    restart: always
+    image: "${DOCKER_USERNAME}/ms-merchandise:${TAG}"
+    expose:
+      - 3003
+    ports:
+      - 3003:3003      
+    networks:
+      - challenge
+networks:
+  challenge:

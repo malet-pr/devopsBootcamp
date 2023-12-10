@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-frontend
+spec:
+  replicas: 2  
+  selector:
+    matchLabels:
+      app: ms-frontend
+  template:
+    metadata:
+      labels:
+        app: ms-frontend
+    spec:
+      tolerations:
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Exists"
+          effect: "NoSchedule"
+      containers:
+        - name: frontend-container
+          image: maletq/ms-frontend:1.0
+          imagePullPolicy: IfNotPresent 
+          ports:
+            - containerPort: 3000
+          env:
+            - name: MERCHANDISE_SERVICE
+              value: "ms-merchandise:3003" 
+            - name: SHOPPING_CART_SERVICE
+              value: "ms-cart:3002"  
+            - name: PRODUCTS_SERVICE
+              value: "ms-products:3001" 
+          resources:
+            limits:
+              cpu: "100m" 
+              memory: "64Mi" 
+            requests:
+              cpu: "50m" 
+              memory: "32Mi"  
