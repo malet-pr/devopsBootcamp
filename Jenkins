@@ -1,0 +1,102 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://your.git.repo.url.git'
+            }
+        }
+        
+        stage('Build Front-end') {
+            steps {
+                // Build the front-end in Python
+                // Use 'sh' step to run shell commands
+                sh 'cd front-end && python build.py'
+            }
+        }
+
+        stage('Unit and Integration Tests') {
+            steps {
+                // Run unit tests for the front-end
+                sh 'cd front-end && python run_tests.py'
+                
+                // Configure and run integration tests
+                // (adjust commands based on your testing framework)
+                sh 'cd front-end && python run_integration_tests.py'
+            }
+        }
+
+        stage('Build and Deploy .NET Backend') {
+            steps {
+                // Build the .NET backend
+                // Deploy to a test environment
+                // (use appropriate commands for your backend)
+                sh 'cd backend-dotnet && dotnet build'
+                sh 'cd backend-dotnet && dotnet publish'
+                // Deploy to test environment (e.g., using kubectl)
+                sh 'kubectl apply -f kubernetes/backend-deployment.yaml'
+            }
+        }
+
+        stage('Automated Tests for .NET Backend') {
+            steps {
+                // Run automated tests for the .NET backend
+                // (adjust commands based on your testing framework)
+                sh 'cd backend-dotnet && dotnet test'
+            }
+        }
+
+        stage('Build Node.js Backend') {
+            steps {
+                // Build the Node.js backend
+                sh 'cd backend-nodejs && npm install'
+            }
+        }
+
+        stage('Deploy to Minikube') {
+            steps {
+                // Deploy to Minikube using Kubernetes manifests
+                sh 'kubectl apply -f kubernetes/'
+            }
+        }
+
+        stage('Create Kubernetes Objects') {
+            steps {
+                // Create Kubernetes objects from YAML files
+                sh 'kubectl apply -f kubernetes/'
+            }
+        }
+
+        stage('Build Docker Images') {
+            steps {
+                // Build Docker images for each component
+                // (adjust Dockerfile paths accordingly)
+                sh 'docker build -t your-dockerhub-username/frontend:latest ./front-end'
+                sh 'docker build -t your-dockerhub-username/backend-dotnet:latest ./backend-dotnet'
+                sh 'docker build -t your-dockerhub-username/backend-nodejs:latest ./backend-nodejs'
+            }
+        }
+
+        stage('Publish to Docker Hub') {
+            steps {
+                // Authenticate with Docker Hub
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
+                }
+                
+                // Push Docker images to Docker Hub
+                sh 'docker push your-dockerhub-username/frontend:latest'
+                sh 'docker push your-dockerhub-username/backend-dotnet:latest'
+                sh 'docker push your-dockerhub-username/backend-nodejs:latest'
+            }
+        }
+
+        stage('Notifications') {
+            steps {
+                // Configure notifications on pipeline success/failure
+                // (use plugins or custom scripts for notifications)
+            }
+        }
+    }
+}
